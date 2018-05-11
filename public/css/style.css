@@ -1,0 +1,384 @@
+body {
+  background-color: #303030;
+  color: #ff1493;
+}
+
+h2 {
+  color: #ff1493;
+  text-shadow: 1px 1px #000;
+}
+
+h4,
+p,
+.sc-item__votecount {
+  color: #fff
+}
+
+.hidden {
+  display:none;
+}
+
+.feed,
+.profile-feed,
+.trending__tags,
+.balances,
+.create-post,
+.single {
+  padding: 30px 0px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.steemPostBody {
+  display: none;
+}
+
+@media only screen and (min-width: 948px) {
+  .feed,
+  .profile-feed,
+  .trending__tags,
+  .balances,
+  .create-post,
+  .single,
+  .container {
+    padding: 10px 0px;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+}
+
+@media only screen and (min-width: 1060px) {
+  .feed,
+  .profile-feed,
+  .trending__tags,
+  .balances,
+  .create-post,
+  .single,
+  .container {
+    padding: 10px 0px;
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+
+  .main {
+    max-width: 1066px;
+  }
+}
+
+
+a {
+  color: #ff1493;
+  text-shadow: 1px 1px #000;
+}
+
+a:hover {
+  color: #aaa;
+}
+
+.trending__tags {
+  display: none;
+}
+
+.feed,
+.cf {
+  background-color: #303030;
+}
+
+.wallet {
+  padding: 50px;
+  background: #f3f3f3;
+}
+
+.trending__tags a {
+  margin: 5px;
+}
+
+.table-cell-break {
+  word-break:break-all;
+}
+
+
+.tags {
+  margin: 10px 0;
+}
+.tags span {
+  border: solid 1px #000;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 0 5px 0 0;
+  background-color: #ff1493;
+  display: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+.item {
+  border: solid 1px #1212;
+  margin: 30px 5px;
+  border-radius: 3px;
+  box-shadow: 0px 7px 13px #000;
+  width: 250px;
+
+}
+
+.item__contents {
+  height: 195px;
+}
+
+.item__image {
+  min-width: 100%;
+}
+
+.item__image__wrapper {
+  overflow: hidden;
+  width: 250px;
+  height: 144px;
+  border-radius: 5px 5px 0px 0px;
+  background-color: #000;
+
+}
+
+.item__image__wrapper img {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #000;
+}
+
+.item__meta {
+  padding: 3px 0px 0px 3px;
+  font-size: 0.75rem;
+}
+
+.item__title {
+  height: 28px;
+  overflow: hidden;
+}
+
+.item__author {
+  position: relative;
+  bottom: 0px;
+  height: 28px;
+}
+
+.item__upvote {
+  display:none;
+}
+
+.col {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.item__meta h3 {
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.comment {
+  margin: 15px 0;
+}
+.comment-level-1 {
+  padding-left: 15px;
+}
+.comment-level-2 {
+  padding-left: 30px;
+}
+.comment-level-3 {
+  padding-left: 45px;
+}
+
+.meta form {
+  display: flex;
+}
+
+input, label, textarea, button {
+  /*margin: 15px 0;*/
+  width: 100%;
+  border-radius: 3px;
+  padding: 5px;
+}
+
+label,p,h1,h2,h3,h4 {
+  color: #ff1493;
+}
+
+input, textarea {
+  border: solid 1px #7b7b7b;
+}
+
+input:focus, textarea:focus {
+  outline: 0;
+}
+
+textarea {
+  min-height: 120px;
+}
+
+button, input[type="submit"] {
+  cursor: pointer;
+}
+
+.videowrapper {
+  width: auto;
+  max-width: 1067px;
+  max-height: 750px;
+  font-size: 1em;
+  text-align: center;
+}
+
+.videowrapper:before {
+    content: "";
+    width: 1px;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: -1px;
+}
+
+
+.videowrapper video {
+    max-width: 100%;
+    max-height: 600px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.videoFooter {
+  padding-top: 5px;
+}
+
+.videoVoteWrapper {
+  display: flex;
+}
+
+.likesBox {
+  margin-right: 5px;
+}
+.voteRangeWrapper, .voteFormWrapper {
+    margin: 5px 10px;
+    min-width: 150px;
+    max-width: 400px;
+}
+
+.voteRangeWrapper {
+  padding-top: 12px;
+}
+
+/* The slider itself */
+.voteSlider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 15px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+  border-radius: 5px;  
+}
+
+/* Mouse-over effects */
+.voteSlider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */ 
+.voteSlider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #ff1493; /* Pink background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 50%;
+  
+}
+
+.voteSlider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #ff1493; /* Pink background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 50%;
+    
+}
+
+.vote {
+  width: 125px;
+}
+
+.comment-message {
+  margin-top: 50px;
+}
+
+.comment-message textarea {
+  height: 120px;
+  min-height: 120px;
+}
+
+.send-comment {
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 3px;
+  padding: 10px;
+  border: solid 1px #7b7b7b;
+  margin: 20px 0 40px;
+  background-color: grey;
+}
+
+.profile__subnav a {
+  margin: 10px;
+}
+.profile__header {
+  /*height: 150px;*/
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+}
+.profile__header img {
+  border-radius: 50%;
+  margin: 10px;
+  width: 80px;
+  height: 80px;
+}
+
+.btn.load-more-posts {
+  display: block;
+}
+
+.btn-primary {
+  color: #000;
+  background-color: #ff1493;
+  border-color: #000;
+}
+
+.btn-primary:hover {
+  color: #000;
+  background-color: #ff1077;
+  border-color: #000; 
+}
+
+.panel {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+#vid-upload-input, #thumb-upload-input {
+  display: none;
+}
+
+.progress-bar {
+  color: #000;
+  background-color: #ff1493;
+}
+
+.uploadBox {
+  max-width: 400px;
+  margin: 10px;
+}

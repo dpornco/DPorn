@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  include partials/nav
+
+  main.container-fluid.single(data-username=`${username}` data-permlink=`${permlink}` data-category=`${category}` data-videohashstr=`${videohashstr}` data-activeuser=`${activeuser}`)
+  
