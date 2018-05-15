@@ -122,7 +122,7 @@ function getMoreContent(filter, tag){
  * @param {Boolean} initial - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
  */
 function displayContent(result, initial){
-  //console.log(result)
+  console.log(result)
   if (!initial) result.shift()
   for (let i = 0; i < result.length ; i++) {
       let post = result[i];
@@ -433,7 +433,7 @@ createCommentTemplate = (post) => {
         <h4>`+
           //<a href="/@${post.author}" target="_blank">@${post.author}</a>
           `@${post.author}
-          <span> &middot; </span> <span> ${ moment(post.created).fromNow() } </span>
+          <span> &middot; </span> <span> ${ moment.utc(post.created).fromNow() } </span>
         </h4>
         <p>${ html }</p>
         <div class="meta">`+
@@ -522,7 +522,7 @@ function getAccountTransactions(username) {
       let txTime = new Date(tx[1].timestamp).valueOf()
       if(tx[1].op[0] === 'transfer') {
         let row = `<tr>
-          <td>${moment(txTime).fromNow()}</td>
+          <td>${moment.utc(txTime).fromNow()}</td>
           <td>Transfer: ${tx[1].op[1].amount} from: ${tx[1].op[1].from} To: ${tx[1].op[1].to}
           <td class="table-cell-break">${tx[1].op[1].memo}</td>
         </tr>`
@@ -530,7 +530,7 @@ function getAccountTransactions(username) {
       }
       if(tx[1].op[0] == 'claim_reward_balance'){
         let row = `<tr>
-        <td>${moment(txTime).fromNow()}</td>
+        <td>${moment.utc(txTime).fromNow()}</td>
         <td>Claim Reward ${tx[1].op[1].reward_sbd} ${tx[1].op[1].reward_steem} ${vestsToSteem(parseFloat(tx[1].op[1].reward_vests)).toFixed(3)}SP</td>
         <td></td>
         </tr>`
