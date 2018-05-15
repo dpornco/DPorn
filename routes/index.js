@@ -51,10 +51,11 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       /*If user is signed in, get their username to check for vote status on post*/
       if (typeof req.session.steemconnect !== 'undefined') {
         activeuser = req.session.steemconnect.name;
+        //console.log(activeuser)
       }
 
 
-  function getVidBeforeRender(category,username,permlink){
+  function getVidBeforeRender(category,username,permlink,activeuser){
         let videodb = require('../modules/videodb');
         let videohashstr = "no video found"
         let videohashstrraw = "raw string"
@@ -65,10 +66,12 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
             category: category,
             username: username,
             permlink: permlink,
-            videohashstr: videohashstr
+            videohashstr: videohashstr,
+            activeuser: activeuser
           });
           return videohashstr = JSON.stringify(dpost.originalHash),
           videohashstr = videohashstr.slice(1, -1),
+          console.log(activuser),
           res.render('single', {
             category: category,
             username: username,
@@ -81,7 +84,7 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
 
   };
 
-getVidBeforeRender(category,username,permlink);
+getVidBeforeRender(category,username,permlink,activeuser);
 
 });
 module.exports = router;

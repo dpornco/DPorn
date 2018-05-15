@@ -205,6 +205,11 @@ label,p,h1,h2,h3,h4 {
   color: #ff1493;
 }
 
+label {
+  margin: 10px 5px 0px 5px;
+  padding: 5px 5px 0px 5px;
+}
+
 input, textarea {
   border: solid 1px #7b7b7b;
 }
@@ -358,6 +363,10 @@ button, input[type="submit"] {
   border-color: #000;
 }
 
+.btn-primary:disabled {
+  background: #dddddd00;
+}
+
 .btn-primary:hover {
   color: #000;
   background-color: #ff1077;
@@ -381,4 +390,8 @@ button, input[type="submit"] {
 .uploadBox {
   max-width: 400px;
   margin: 10px;
+}
+
+.btn-uploadPost {
+  margin-top: 30px;
 }

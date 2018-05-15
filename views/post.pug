@@ -46,13 +46,13 @@ block content
     form(action="/post/create-post/" method="post")
       label Title
       input(type="text" name="title" required)
-      label Video Hash
-      input(type="text" id="videoHash" value="Hash will populate automatically a few moments after upload completes" name="videohash" required)
-      label Thumbnail Hash
-      input(type="text" id="thumbnailHash" value="Hash will populate automatically a few moments after upload completes" name="thumbnailhash" required)
+      label Video Hash (will populate automatically a few moments after upload)
+      input(type="text" id="videoHash" name="videohash" required)
+      label Thumbnail Hash (will populate automatically a few moments after upload)
+      input(type="text" id="thumbnailHash" name="thumbnailhash" required)
       label Tags (comma separated)
       input(type="text" value="nsfw, dporncovideo" name="tags" required)
-      button.btn.btn-primary(type="submit") Submit
+      button.btn.btn-primary.btn-uploadPost(type="submit") Submit
       p Posting as #{name}
       p #{msg}
     </div>

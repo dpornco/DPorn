@@ -5,7 +5,7 @@ let config = {
         redirect_uri: 'http://localhost:3000/auth/'
     },
     session: {
-        secret: 'asoifn024r08OIOEIF2348FDIFasiuf'
+        secret: 'jhhuoiuuhrueweOOHHUHUtttDDDRrdcdctf4857398'
     }
 };
 

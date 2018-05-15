@@ -304,6 +304,7 @@ function appendSinglePost(post, users){
   let voteWeight = 100
   let info = $('main').data()
   let activeUser = info.activeuser
+  //console.log(info)
   let voted = false
   let tags = JSON.parse(post.json).tags.reduce( (all,tag) => all + `<span>${tag}</span>`, '')
 
@@ -327,17 +328,14 @@ function appendSinglePost(post, users){
     </div>` 
 
  let voteButton = `<div class=videoVoteWrapper d-flex justify-content-center>
-            <div class="voteRangeWrapper p4"><input id="voteRangeSlider" type="range" min="1" max="100" value="100" class="voteSlider"></div>
+            <div id=voteRangeWrapper class="voteRangeWrapper p4"><input id="voteRangeSlider" type="range" min="1" max="100" value="100" class="voteSlider"></div>
             <div class="voteFormWrapper p4"><form method="post">
               <input type="hidden" name="postId" value="${post.id}">
               <input type="hidden" name="author" value="${post.author}">
               <input type="hidden" name="permlink" value="${post.permlink}">
               <input type="hidden" id="videoVoteWeight" name="weight" value="${voteWeight}">
-
               <input class="vote btn btn-primary" type="submit" id="videoVoteButton" value="Upvote ${voteWeight}%">
             </form></div></div>`;
-//              <input type="hidden" name="weight" value="${voteWeight}">
-
 
  let commentBox = `
   <div>
@@ -349,17 +347,15 @@ function appendSinglePost(post, users){
 
 
  let slider = document.getElementById("voteRangeSlider");
-
  slider.oninput = function() {
    voteWeight = this.value
    ,document.getElementById("videoVoteButton").value="Upvote "+voteWeight+"%"
    ,document.getElementById("videoVoteWeight").value=voteWeight;
  }
 
-
 steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
         let voted = false
-        console.log(activeUser)
+        // console.log(activeUser)
 	for (var i = 0; i < result.length; i++) {
           if (result[i].voter === activeUser) {
              if (result[i].percent > 0) {
@@ -378,14 +374,12 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
           voteWeight = 0,
           document.getElementById("videoVoteWeight").value=voteWeight,
           document.getElementById("videoVoteButton").value="Remove Vote",
-          document.getElementById("voteRangeSlider").classList.add('hidden'),
-          console.log(voted)
+          document.getElementById("voteRangeWrapper").classList.add('hidden')
         } else {
-          //voteWeight = 100,
           document.getElementById("videoVoteWeight").value=voteWeight,
           document.getElementById("videoVoteButton").value="Vote "+`${voteWeight}`+"%",
-          document.getElementById("voteRangeSlider").classList.remove('hidden'),
-          console.log(voted)
+          document.getElementById("voteRangeWrapper").classList.remove('hidden'),
+          console.log(document.getElementById("voteRangeWrapper").classList)
         }
   }
 
@@ -615,6 +609,7 @@ if ($('main').hasClass('profile') ) {
 
 $('main').on('click', '.vote',(e) => {
   let $voteButton = $(e.currentTarget)
+  $(e.currentTarget).prop('disabled', true);
   e.preventDefault()
   //console.log(e.currentTarget.parent)
   $.post({
@@ -623,11 +618,21 @@ $('main').on('click', '.vote',(e) => {
     data:  $(e.currentTarget).parent().serialize()
   }, (response) => {
     if (response.error) {
-
       $(`<span>${response.error.error_description}</span>`).insertAfter($voteButton)
+      $(e.currentTarget).prop('disabled', false);
     } else {
-      $('<span>Voted!</span>').insertAfter($voteButton)
-    }
+      $('<span>Voted!</span>').insertAfter($voteButton);
+      $(e.currentTarget).prop('disabled', false);
+        if (document.getElementById("videoVoteWeight").value > 0) {
+          document.getElementById("videoVoteWeight").value=0,
+          document.getElementById("videoVoteButton").value="Remove Vote",
+          document.getElementById("voteRangeWrapper").classList.add('hidden')
+        } else {
+          document.getElementById("videoVoteWeight").value=100,
+          document.getElementById("videoVoteButton").value="Vote 100%",
+          document.getElementById("voteRangeWrapper").classList.remove('hidden');
+        }
+      }
   })
 })
 
