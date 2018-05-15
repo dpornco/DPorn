@@ -18,5 +18,7 @@
     "pug": "2.0.0-beta11",
     "sc2-sdk": "^1.0.2",
     "serve-favicon": "~2.4.5"
+  },
+  "devDependencies": {
   }
 }
