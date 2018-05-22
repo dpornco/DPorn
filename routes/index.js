@@ -71,7 +71,6 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
           });
           return videohashstr = JSON.stringify(dpost.originalHash),
           videohashstr = videohashstr.slice(1, -1),
-          console.log(activuser),
           res.render('single', {
             category: category,
             username: username,

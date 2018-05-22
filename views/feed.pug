@@ -2,9 +2,8 @@ extends layout
 
 block content
   include partials/nav
-
   aside.trending__tags
-  main.feed(data-feed-type=`${feed}` data-username=`${username}` data-tag=`${tag}`)
+  main.feed(data-feed-type=`${feed}` data-username=`${username}` data-tag=`${tag}` data-posts=`${posts}`)
     .container
       if feed != 'user-feed'
         .row: h2= feed

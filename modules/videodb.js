@@ -27,6 +27,10 @@ let VideoSchema = new mongoose.Schema({
   subscribers: Array,
 });
 
+//add field for upvotes, update whenever video is loaded, use for trending
+
+VideoSchema.index({name: 'text', 'tags': 'text'});
+
 exports.Video = mongoose.model('Video', VideoSchema);
 
 /*exports.getVidHashFromPermLink = function(permlink) {

@@ -119,45 +119,51 @@ function getMoreContent(filter, tag){
  * Adds more posts to the current feed view
  * @function
  * @param {Array} result - An Array of Steem posts from the STEEM API
- * @param {Boolean} initial - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
+ * @param {Int} page - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
  */
-function displayContent(result, initial){
-  console.log(result)
-  if (!initial) result.shift()
-  for (let i = 0; i < result.length ; i++) {
+function displayContent(result, page){
+  //console.log(result)
+  //if (!initial) result.shift()
+    if (page > 0) result = result.slice(page*30,result.length)
+     else result.sort()
+  //for (let i = 0; i < result.length ; i++) {
+    for (let i = 0; i < 30 && i < result.length ; i++) {
       let post = result[i];
       allContent.push(post)
 
-      var urlRegex = /(https?:\/\/[^\s]+)/g;
-      post.body = post.body.replace(urlRegex, (url) => {
-        let last = url.slice(-3)
-        if ( last === 'jpg' || last === 'png' || last === 'jpe' || last === 'gif' )  {
-          return '<img src="' + url + '">';
-        } else { return url }
-      })
+      // var urlRegex = /(https?:\/\/[^\s]+)/g;
+      // post.body = post.body.replace(urlRegex, (url) => {
+      //   let last = url.slice(-3)
+      //   if ( last === 'jpg' || last === 'png' || last === 'jpe' || last === 'gif' )  {
+      //     return '<img src="' + url + '">';
+      //   } else { return url }
+      // })
 
-      if( typeof JSON.parse(post.json_metadata).image === 'undefined' ){
-        image = genImageInHTML(post.body)
-      } else {
-        image = JSON.parse(post.json_metadata).image[0]
-      }
-
+      // if( typeof JSON.parse(post.json_metadata).image === 'undefined' ){
+      //   image = genImageInHTML(post.body)
+      // } else {
+      //   image = JSON.parse(post.json_metadata).image[0]
+      // }
+      let image = `https://gateway.ipfs.io/ipfs/` + post.posterHash
+      let url = '/watch/@' + post.username + '/' + post.permlink
+      let id = ''
+      //console.log(url)
       let itemTemplate = `
-        <div class="item d-flex flex-wrap p-0" data-post-id="${post.id}" data-url="${post.url}" data-permlink="${ post.permlink }">
+        <div class="item d-flex flex-wrap p-0" data-post-id="${id}" data-url="${url}" data-permlink="${ post.permlink }">
 	  <div class="item__contents">
 	    <div class="item__image__wrapper">
-                <a href="${post.url}"><img class="item__image" src="https://steemitimages.com/520x520/${image}" onerror=""></a>
+                <a href="${url}"><img class="item__image" src="https://steemitimages.com/520x520/${image}" onerror=""></a>
 	    </div>
             <div class="item__meta">
 	      <div class = "item__title">
-                <a href="${post.url}"><h3>${post.title}</h3></a>
+                <a href="${url}"><h3>${post.title}</h3></a>
 	      </div>
 	      <div class = "item__author">
-                <span>@${post.author}</span>
+                <span>@${post.username}</span>
 	      </div>
               <form method="post" class="item__upvote">
                 <input type="hidden" name="postId" value="${post.id}">
-                <input type="hidden" name="author" value="${post.author}">
+                <input type="hidden" name="author" value="${post.username}">
                 <input type="hidden" name="permlink" value="${post.permlink}">
                 <input type="submit" class="vote" value="Vote">
               </form>
@@ -548,10 +554,13 @@ function vestsToSteem(vests){
 if ($('main').hasClass('feed') ) {
     let feedType = $('main.feed').data('feed-type')
     //let tag = $('main.feed').data('tag') || ''
+    let posts = $('main.feed').data('posts')
+    //console.log($('main.feed').data('posts'))
     let tag = "dporncovideo" || ''
     if(feedType === 'trending'){
-      getTrendingTags()
-      getTrending({tag, 'limit': 30 }, true)
+      //getTrendingTags()
+      displayContent(posts,0)
+      //getTrending({tag, 'limit': 30 }, true)
     } else if (feedType === 'user-feed'){
       //let username = $('main').data('username')
       //getUserFeed({ tag: username, limit: 20 }, true)
@@ -660,8 +669,12 @@ $('main').on('click', '.send-comment', (e) => {
 
 
 $('.load-more-posts').on('click', (e) => {
-  let filter = $('main').data('feed-type')
+  //let filter = $('main').data('feed-type')
   //let tag = $('main').data('tag') || ''
-  let tag = "dporncovideo"
-  getMoreContent(filter, tag)
+  //let tag = "dporncovideo"
+  //getMoreContent(filter, tag)
+  let posts = $('main.feed').data('posts')
+  //document.getElementById("morevotesbutton").value - get the last 2 char, trim it, throw it in a variable, and use that in the next line
+  displayContent(posts, 2)
+  
 })
