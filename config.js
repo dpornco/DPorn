@@ -1,8 +1,8 @@
 let config = {
-    port: 3030,
+    port: 3000,
     auth: {
         client_id: 'dpornco.app',
-        redirect_uri: 'http://alpha003.dporn.co/auth/'
+        redirect_uri: 'http://localhost:3000/auth/'
     },
     session: {
         secret: ''
