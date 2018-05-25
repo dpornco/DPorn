@@ -124,8 +124,8 @@ function getMoreContent(filter, tag){
 function displayContent(result, page){
   //console.log(result)
   //if (!initial) result.shift()
+  console.log(result)
     if (page > 0) result = result.slice(page*30,result.length)
-     else result.sort()
   //for (let i = 0; i < result.length ; i++) {
     for (let i = 0; i < 30 && i < result.length ; i++) {
       let post = result[i];
@@ -149,27 +149,31 @@ function displayContent(result, page){
       let id = ''
       //console.log(url)
       let itemTemplate = `
-        <div class="item d-flex flex-wrap p-0" data-post-id="${id}" data-url="${url}" data-permlink="${ post.permlink }">
-	  <div class="item__contents">
-	    <div class="item__image__wrapper">
-                <a href="${url}"><img class="item__image" src="https://steemitimages.com/520x520/${image}" onerror=""></a>
-	    </div>
-            <div class="item__meta">
-	      <div class = "item__title">
-                <a href="${url}"><h3>${post.title}</h3></a>
-	      </div>
-	      <div class = "item__author">
-                <span>@${post.username}</span>
-	      </div>
+      <div class="item d-flex flex-wrap p-0" data-post-id="${id}" data-url="${url}" data-permlink="${ post.permlink }">
+	      <div class="item__contents">
+	        <div class="item__image__wrapper">
+                  <a href="${url}"><img class="item__image" src="https://steemitimages.com/520x520/${image}" onerror=""></a>
+	        </div>
+          <div class="item__meta">
+	        <div class = "item__title">
+                  <a href="${url}"><h3>${post.title}</h3></a>
+          </div>
+          <div class = "item__details">
+	          <div class = "item__author">
+                    <span>@${post.username}</span>
+            </div>
+            <div class = "item__value">
+              <span>$${post.value} SBD</span>
+            </div>
+          </div>
               <form method="post" class="item__upvote">
                 <input type="hidden" name="postId" value="${post.id}">
                 <input type="hidden" name="author" value="${post.username}">
                 <input type="hidden" name="permlink" value="${post.permlink}">
                 <input type="submit" class="vote" value="Vote">
               </form>
-            </div>
-	  </div>
-        </div>
+         </div>
+	     </div>
         `
         $('.feed-insert').append(itemTemplate)
   }

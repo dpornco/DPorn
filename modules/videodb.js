@@ -24,7 +24,21 @@ let VideoSchema = new mongoose.Schema({
   noofview: Number,
   upvote: Number,
   downvote: Number,
+  netvote: Number,
+  value: Number,
   subscribers: Array,
+}, {
+toObject: {
+  virtuals: true
+  },
+  toJSON: {
+  virtuals: true 
+  }
+});
+
+VideoSchema.virtual('trendingRank').get(function() {
+  if(!this.posteddate) {this.posteddate = Date.now()}
+  return this.value/((Date.now() - this.posteddate.getTime())/(1000*60*60));
 });
 
 //add field for upvotes, update whenever video is loaded, use for trending

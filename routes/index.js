@@ -48,17 +48,15 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       let videohashstr = "no video found"
       let activeuser = "dpornco"
 
-      /*If user is signed in, get their username to check for vote status on post*/
+      /*If user is signed in, get their username to check for vote status on post later*/
       if (typeof req.session.steemconnect !== 'undefined') {
         activeuser = req.session.steemconnect.name;
-        //console.log(activeuser)
       }
 
 
   function getVidBeforeRender(category,username,permlink,activeuser){
         let videodb = require('../modules/videodb');
         let videohashstr = "no video found"
-        let videohashstrraw = "raw string"
 
         videodb.Video.findOne ({ 'permlink': [req.params.permlink] }, 'originalHash', function(err, dpost) {
           if (err) return next(err);
@@ -69,6 +67,21 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
             videohashstr: videohashstr,
             activeuser: activeuser
           });
+
+          let steem = require('steem');
+          steem.api.getContent(username, permlink, function(err, result) {
+            if (err) {
+              console.log(err)
+            } else {
+              dpost.set({value: result.total_payout_value.slice(0, -4),
+                netvote: result.net_votes})
+              dpost.save(function (err, vid) {
+                if (err) console.log(err)
+              });
+            }
+          });
+
+
           return videohashstr = JSON.stringify(dpost.originalHash),
           videohashstr = videohashstr.slice(1, -1),
           res.render('single', {
@@ -78,12 +91,38 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
             videohashstr: videohashstr,
             activeuser: activeuser
           });
-        
-        });
 
+
+
+
+
+        });
   };
 
+
 getVidBeforeRender(category,username,permlink,activeuser);
+
+//add code here to update db with upvotes/downvotes/value/tags if needed. if everything already matches, no update
+//use steemjs to get the current data from blockchain, then use mongoose to compare/update
+
+//steem.api.getContent(username, permlink, function(err, result) {
+  // let steem = require('steem');
+  // steem.api.getContent(username, permlink, function(err, result) {
+  //   // console.log(err, result);
+  //   // console.log(result.net_votes);
+  //   // console.log(result.created);
+  //   // console.log(result.total_payout_value);
+  //   if (err) {
+  //     console.log(err)
+  //   } else {
+  //     let videodb = require('../modules/videodb');
+  //     videodb.Video.findOne ({ 'permlink': [req.params.permlink] }, function(err, dpost) {
+
+
+  //     }
+    
+  // });
+
 
 });
 module.exports = router;

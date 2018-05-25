@@ -11,7 +11,7 @@ let index = require('./routes/index');
 let auth = require('./routes/auth');
 let feed = require('./routes/feed');
 let post = require('./routes/post');
-let view = require('./routes/view');
+//let view = require('./routes/view');
 let uploads = require('./routes/uploads');
 //let tag = require('./routes/tag');
 
@@ -50,7 +50,7 @@ app.use('/logout', auth);
 app.use('/feed', feed);
 app.use('/post', post);
 app.use('/post/create-post', post);
-app.use('/view', view);
+// app.use('/view', view);
 app.use('/upload', uploads);
 //app.use('/tag', tag);
 

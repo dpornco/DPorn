@@ -8,25 +8,52 @@ router.get('/:feed/:tag?', (req, res, next) => {
     let tag = req.params.tag
     let videodb = require('../modules/videodb');
 
-    //add sortBy based on req.params.feed (trending, created, hot)
-
+    if(tag) {
     videodb.Video.find({$text: {$search: tag}}, function (err, result) {
       if (err) {
         console.log(err)
       } else {
-      let posts = JSON.stringify(result)
-      //console.log(result)
+      function trendingSort(a, b) {
+        return b.trendingRank - a.trendingRank;
+      }
+      let results = result.sort(trendingSort);
+
+      let posts = JSON.stringify(results)
+      //console.log(posts)
       res.render('feed', {
         feed: feed,
         tag: tag || '',
         posts: posts,
-        title: tag + ' videos on DPorn - Decentralized, blockchain driven porn'
+        title: tag + ' videos on DPorn - Decentralized, blockchain porn'
       });
       
       }
     });
+  };
 
+  if(!tag){
+    tag = ' '
+    videodb.Video.find({}, function (err, result) {
+      if (err) {
+        console.log(err)
+      } else {
+      function trendingSort(a, b) {
+        return b.trendingRank - a.trendingRank;
+      }
+      let results = result.sort(trendingSort);
 
+      let posts = JSON.stringify(results)
+      //console.log(posts)
+      res.render('feed', {
+        feed: feed,
+        tag: tag || '',
+        posts: posts,
+        title: 'Trending videos on DPorn - Decentralized, blockchain porn'
+      });
+      
+      }
+    });
+  };
 
     // res.render('feed', {
     //   feed: feed,
