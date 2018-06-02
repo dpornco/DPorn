@@ -370,6 +370,16 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
         }
     return result});
 
+    
+
+    /**
+     * Donation function. Called when you want user to donate to creators. Returns a Steemconnect URL in wich user can press active key to send donation.
+ * @function
+ * @param {String} donateCoin - Coin users want to donate, can be SBD or STEEM.
+ * @param {String} donateAmount - How much user wants to donate as a stirng.
+ * @param {String} donateMemo - What the memo user want to send with the donation.
+ * @param {String} donateFrom - User who donatation comes from. Can be an empty string if user isn't logged in.
+ */
     function donate(donateCoin, donateAmount, donateMemo, donateFrom){
       var coin = donateCoin
       var to = author.name
