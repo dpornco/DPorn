@@ -265,7 +265,6 @@ function getPostAndComments(url) {
   })
 }
 
-
 /**
  * gets a profile image from a steem users data where possible
  * @function
@@ -288,7 +287,6 @@ function generateProfileImage(author){
   }
   return profileImage
 }
-
 
 /**
  * appends the main part of a post to the page
@@ -338,7 +336,6 @@ function appendSinglePost(post, users){
             </form></div></div>`;
 //              <input type="hidden" name="weight" value="${voteWeight}">
 
-
  let commentBox = `
   <div>
     <textarea class="comment-message" rows="5"></textarea>
@@ -346,7 +343,6 @@ function appendSinglePost(post, users){
   </div>
   `
   $('main').append(header + html + voteButton + commentBox)
-
 
  let slider = document.getElementById("voteRangeSlider");
 
@@ -370,8 +366,6 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
         }
     return result});
 
-    
-
     /**
      * Donation function. Called when you want user to donate to creators. Returns a Steemconnect URL in wich user can press active key to send donation.
  * @function
@@ -393,8 +387,6 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
       return site
     }
 
-
-
   function setVotedStatus(voted){
         if (voted === true) {
           voteWeight = 0,
@@ -410,9 +402,7 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
           console.log(voted)
         }
   }
-
 }
-
 
 /**
  * appends comments to single page after main content
@@ -434,8 +424,6 @@ function appendComments(comments){
       })
     })
 }
-
-
 
 /**
  * creates the HTML for a comment from a comment object
@@ -676,7 +664,6 @@ $('main').on('click', '.send-comment', (e) => {
           }
       })
 })
-
 
 $('.load-more-posts').on('click', (e) => {
   let filter = $('main').data('feed-type')
