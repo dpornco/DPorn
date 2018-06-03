@@ -379,10 +379,7 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
       var to = author.name
       var amount = donateAmount
       var memo = donateMemo.replace(/\s+/g,'%20')
-      var from = ""
-      //todo: IF user is autheticated {
-      //from = user.name
-      //}
+      var from = donateFrom
       let site = "https://steemconnect.com/sign/transfer?to=" + to + "&from=" + from + "&memo=" + memo + "&amount=" + amount + "%20" + coin
       return site
     }
