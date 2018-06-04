@@ -42,7 +42,8 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
       originalHash: originalHash,
       posterHash: posterHash,
       username: author,
-      status: 'draft'
+      status: 'draft',
+      posteddate: Date.now()
     });
     console.log(mongoEntry)
     mongoEntry.save(function (err) {

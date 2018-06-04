@@ -12,19 +12,41 @@ router.get('/', (req, res, next) =>  {
   }
 });
 
-/* GET a users blog profile page. */
-router.get('/@:username', (req, res, next) => {
-      let username = req.params.username
-    res.redirect(`/feed/trending`)
-      /*res.render('profile', {
-        username: username
-      });*/
-});
+// /* GET a users blog profile page. */
+// router.get('/@:username', (req, res, next) => {
+  
+//     res.redirect(`/feed/trending`)
+//       //res.render('profile', {
+//       //  username: username
+//       //});
+// });
 
 /* GET a users blog feed page. */
-router.get('/@:username/feed', (req, res, next) => {
-      let username = req.params.username
+router.get('/@:username', (req, res, next) => {
+  let videodb = require('../modules/videodb');
+  console.log(req.username);
+  videodb.Video.find({'username': [req.params.username]}, function (err, result) {
+    if (err) {
       res.redirect(`/feed/trending`)
+      console.log(err)
+    } else {
+    console.log(result);
+    function createdSort(a, b) {
+      return b.posteddate - a.posteddate;
+    }
+    let results = result.sort(createdSort);
+
+    let posts = JSON.stringify(results)
+    //console.log(posts)
+    res.render('feed', {
+      feed: 'user-feed',
+      posts: posts,
+      username: req.username,
+      title: 'Newest videos from' + req.username + 'DPorn - Decentralized, blockchain porn'
+    });
+    
+    }
+  });
       /*res.render('feed', {
         feed: 'user-feed',
         username: username
@@ -70,11 +92,14 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
 
           let steem = require('steem');
           steem.api.getContent(username, permlink, function(err, result) {
+            console.log(result.created)
             if (err) {
               console.log(err)
             } else {
               dpost.set({value: result.total_payout_value.slice(0, -4),
-                netvote: result.net_votes})
+                netvote: result.net_votes,
+                tags: JSON.parse(result.json_metadata).tags.join(','),
+                posteddate: result.created})
               dpost.save(function (err, vid) {
                 if (err) console.log(err)
               });
@@ -102,27 +127,22 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
 
 getVidBeforeRender(category,username,permlink,activeuser);
 
-//add code here to update db with upvotes/downvotes/value/tags if needed. if everything already matches, no update
-//use steemjs to get the current data from blockchain, then use mongoose to compare/update
-
-//steem.api.getContent(username, permlink, function(err, result) {
-  // let steem = require('steem');
-  // steem.api.getContent(username, permlink, function(err, result) {
-  //   // console.log(err, result);
-  //   // console.log(result.net_votes);
-  //   // console.log(result.created);
-  //   // console.log(result.total_payout_value);
-  //   if (err) {
-  //     console.log(err)
-  //   } else {
-  //     let videodb = require('../modules/videodb');
-  //     videodb.Video.findOne ({ 'permlink': [req.params.permlink] }, function(err, dpost) {
-
-
-  //     }
-    
-  // });
-
+  //steem.api.getContent(username, permlink, function(err, result) {
+//     let steem = require('steem');
+//     steem.api.getContent(username, permlink, function(err, result) {
+//       // console.log(err, result);
+//       // console.log(result.net_votes);
+//       // console.log(result.created);
+//       // console.log(result.total_payout_value);
+//       //console.log(result.json_metadata)
+//       console.log(JSON.parse(result.json_metadata).tags.join(','))
+//         let videodb = require('../modules/videodb');
+//         videodb.Video.findOne ({ 'permlink': [req.params.permlink] }, function(err, dpost) {
+//           console.log(err, dpost.tags)
+//         });
+      
+//     });
 
 });
+
 module.exports = router;
