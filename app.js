@@ -11,8 +11,9 @@ let index = require('./routes/index');
 let auth = require('./routes/auth');
 let feed = require('./routes/feed');
 let post = require('./routes/post');
-let view = require('./routes/view');
+//let view = require('./routes/view');
 let uploads = require('./routes/uploads');
+//let tag = require('./routes/tag');
 
 let config = require('./config')
 
@@ -31,7 +32,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -49,8 +50,9 @@ app.use('/logout', auth);
 app.use('/feed', feed);
 app.use('/post', post);
 app.use('/post/create-post', post);
-app.use('/view', view);
+// app.use('/view', view);
 app.use('/upload', uploads);
+//app.use('/tag', tag);
 
 
 // catch 404 and forward to error handler
@@ -58,6 +60,7 @@ app.use(function(req, res, next) {
   let err = new Error('Not Found');
   err.status = 404;
   next(err);
+  //console.log(req);
 });
 
 // error handler
