@@ -121,12 +121,7 @@ function getMoreContent(filter, tag){
  * @param {Array} result - An Array of Steem posts from the STEEM API
  * @param {Int} page - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
  */
-<<<<<<< HEAD
-function displayContent(result, initial){
-  console.log(result)
-  if (!initial) result.shift()
-  for (let i = 0; i < result.length ; i++) {
-=======
+
 function displayContent(result, page){
   //console.log(result)
   //if (!initial) result.shift()
@@ -134,7 +129,6 @@ function displayContent(result, page){
     if (page > 0) result = result.slice(page*30,result.length)
   //for (let i = 0; i < result.length ; i++) {
     for (let i = 0; i < 30 && i < result.length ; i++) {
->>>>>>> origin/pr/12
       let post = result[i];
       allContent.push(post)
 
@@ -282,7 +276,6 @@ function getPostAndComments(url) {
   })
 }
 
-
 /**
  * gets a profile image from a steem users data where possible
  * @function
@@ -305,7 +298,6 @@ function generateProfileImage(author){
   }
   return profileImage
 }
-
 
 /**
  * appends the main part of a post to the page
@@ -354,6 +346,7 @@ function appendSinglePost(post, users){
               <input class="vote btn btn-primary" type="submit" id="videoVoteButton" value="Upvote ${voteWeight}%">
             </form></div></div>`;
 
+
  let commentBox = `
   <div>
     <textarea class="comment-message" rows="5"></textarea>
@@ -361,7 +354,6 @@ function appendSinglePost(post, users){
   </div>
   `
   $('main').append(header + html + voteButton + commentBox)
-
 
  let slider = document.getElementById("voteRangeSlider");
  slider.oninput = function() {
@@ -384,6 +376,16 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
         }
     return result});
 
+
+    /**
+     * Donation function. Called when you want user to donate to creators. Returns a Steemconnect URL in wich user can press active key to send donation.
+ * @function
+ * @param {String} donateCoin - Coin users want to donate, can be SBD or STEEM.
+ * @param {String} donateAmount - How much user wants to donate as a stirng.
+ * @param {String} donateMemo - What the memo user want to send with the donation.
+ * @param {String} donateFrom - User who donatation comes from. Can be an empty string if user isn't logged in.
+ */
+
     function donate(donateCoin, donateAmount, donateMemo, donateFrom){
       var coin = donateCoin
       var to = author.name
@@ -396,8 +398,6 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
       let site = "https://steemconnect.com/sign/transfer?to=" + to + "&from=" + from + "&memo=" + memo + "&amount=" + amount + "%20" + coin
       return site
     }
-
-
 
   function setVotedStatus(voted){
         if (voted === true) {
@@ -412,9 +412,7 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
           console.log(document.getElementById("voteRangeWrapper").classList)
         }
   }
-
 }
-
 
 /**
  * appends comments to single page after main content
@@ -692,7 +690,6 @@ $('main').on('click', '.send-comment', (e) => {
           }
       })
 })
-
 
 $('.load-more-posts').on('click', (e) => {
   //let filter = $('main').data('feed-type')
