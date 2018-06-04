@@ -384,6 +384,19 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
         }
     return result});
 
+    function donate(donateCoin, donateAmount, donateMemo, donateFrom){
+      var coin = donateCoin
+      var to = author.name
+      var amount = donateAmount
+      var memo = donateMemo.replace(/\s+/g,'%20')
+      var from = ""
+      //todo: IF user is autheticated {
+      //from = user.name
+      //}
+      let site = "https://steemconnect.com/sign/transfer?to=" + to + "&from=" + from + "&memo=" + memo + "&amount=" + amount + "%20" + coin
+      return site
+    }
+
 
 
   function setVotedStatus(voted){
@@ -423,6 +436,8 @@ function appendComments(comments){
       })
     })
 }
+
+
 
 /**
  * creates the HTML for a comment from a comment object
