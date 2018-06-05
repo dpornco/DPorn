@@ -299,6 +299,7 @@ function generateProfileImage(author){
   return profileImage
 }
 
+
 /**
  * appends the main part of a post to the page
  * @function
@@ -346,7 +347,6 @@ function appendSinglePost(post, users){
               <input class="vote btn btn-primary" type="submit" id="videoVoteButton" value="Upvote ${voteWeight}%">
             </form></div></div>`;
 
-
  let commentBox = `
   <div>
     <textarea class="comment-message" rows="5"></textarea>
@@ -354,6 +354,7 @@ function appendSinglePost(post, users){
   </div>
   `
   $('main').append(header + html + voteButton + commentBox)
+
 
  let slider = document.getElementById("voteRangeSlider");
  slider.oninput = function() {
@@ -376,29 +377,6 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
         }
     return result});
 
-
-    /**
-     * Donation function. Called when you want user to donate to creators. Returns a Steemconnect URL in wich user can press active key to send donation.
- * @function
- * @param {String} donateCoin - Coin users want to donate, can be SBD or STEEM.
- * @param {String} donateAmount - How much user wants to donate as a stirng.
- * @param {String} donateMemo - What the memo user want to send with the donation.
- * @param {String} donateFrom - User who donatation comes from. Can be an empty string if user isn't logged in.
- */
-
-    function donate(donateCoin, donateAmount, donateMemo, donateFrom){
-      var coin = donateCoin
-      var to = author.name
-      var amount = donateAmount
-      var memo = donateMemo.replace(/\s+/g,'%20')
-      var from = ""
-      //todo: IF user is autheticated {
-      //from = user.name
-      //}
-      let site = "https://steemconnect.com/sign/transfer?to=" + to + "&from=" + from + "&memo=" + memo + "&amount=" + amount + "%20" + coin
-      return site
-    }
-
   function setVotedStatus(voted){
         if (voted === true) {
           voteWeight = 0,
@@ -412,7 +390,9 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
           console.log(document.getElementById("voteRangeWrapper").classList)
         }
   }
+
 }
+
 
 /**
  * appends comments to single page after main content
@@ -434,8 +414,6 @@ function appendComments(comments){
       })
     })
 }
-
-
 
 /**
  * creates the HTML for a comment from a comment object
