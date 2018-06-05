@@ -107,7 +107,7 @@ a:hover {
   border-radius: 5px;
   margin: 0 5px 0 0;
   background-color: #ff1493;
-  display: none;
+  /*display: none;*/
 }
 
 img {
@@ -150,6 +150,7 @@ img {
 .item__meta {
   padding: 3px 0px 0px 3px;
   font-size: 0.75rem;
+  width: 100%;
 }
 
 .item__title {
@@ -161,6 +162,10 @@ img {
   position: relative;
   bottom: 0px;
   height: 28px;
+}
+
+.item__value {
+  margin-right: 5px;
 }
 
 .item__upvote {

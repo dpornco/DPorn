@@ -8,7 +8,7 @@ router.get('/:feed/:tag?', (req, res, next) => {
     let tag = req.params.tag
     let videodb = require('../modules/videodb');
 
-    if(tag) {
+    if(tag && feed === "trending") {
     videodb.Video.find({$text: {$search: tag}}, function (err, result) {
       if (err) {
         console.log(err)
@@ -20,6 +20,17 @@ router.get('/:feed/:tag?', (req, res, next) => {
 
       let posts = JSON.stringify(results)
       //console.log(posts)
+
+
+      function convertCase(str) {
+        var lower = String(str).toLowerCase();
+        return lower.replace(/(^| )(\w)/g, function(x) {
+          return x.toUpperCase();
+        });
+      }
+      let formattedFeed = convertCase(feed)
+      let formattedTag = convertCase(tag)
+
       res.render('feed', {
         feed: feed,
         tag: tag || '',
@@ -31,7 +42,7 @@ router.get('/:feed/:tag?', (req, res, next) => {
     });
   };
 
-  if(!tag){
+  if(!tag && feed === "trending"){
     tag = ' '
     videodb.Video.find({}, function (err, result) {
       if (err) {
@@ -49,6 +60,64 @@ router.get('/:feed/:tag?', (req, res, next) => {
         tag: tag || '',
         posts: posts,
         title: 'Trending videos on DPorn - Decentralized, blockchain porn'
+      });
+      
+      }
+    });
+  };
+
+  if(tag && feed != "trending") {
+    videodb.Video.find({$text: {$search: tag}}, function (err, result) {
+      if (err) {
+        console.log(err)
+      } else {
+        function createdSort(a, b) {
+          return b.posteddate - a.posteddate;
+        }
+        let results = result.sort(createdSort);
+
+      let posts = JSON.stringify(results)
+      //console.log(posts)
+
+
+      function convertCase(str) {
+        var lower = String(str).toLowerCase();
+        return lower.replace(/(^| )(\w)/g, function(x) {
+          return x.toUpperCase();
+        });
+      }
+      let formattedFeed = convertCase(feed)
+      let formattedTag = convertCase(tag)
+
+      res.render('feed', {
+        feed: feed,
+        tag: tag || '',
+        posts: posts,
+        title: tag + ' videos on DPorn - Decentralized, blockchain porn'
+      });
+      
+      }
+    });
+  };
+
+  if(!tag && feed != "trending"){
+    tag = ' '
+    videodb.Video.find({}, function (err, result) {
+      if (err) {
+        console.log(err)
+      } else {
+      function createdSort(a, b) {
+        return b.posteddate - a.posteddate;
+      }
+      let results = result.sort(createdSort);
+
+      let posts = JSON.stringify(results)
+      //console.log(posts)
+      res.render('feed', {
+        feed: feed,
+        tag: tag || '',
+        posts: posts,
+        title: 'Newest videos on DPorn - Decentralized, blockchain porn'
       });
       
       }
