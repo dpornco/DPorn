@@ -2,3 +2,4 @@ node_modules/
 public/vidcache/
 public/imgs/
 config.js
+npm-debug.log
