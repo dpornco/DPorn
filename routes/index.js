@@ -62,6 +62,71 @@ router.get('/@:username/transfers', (req, res, next) => {
       });
 });
 
+/* GET a legacy single post page. */
+router.get('/watchvideosteem/:permlink/:username', (req, res, next) => {
+
+  let category = 'dporn'
+  let username = req.params.username
+  let permlink = req.params.permlink
+  let videohashstr = "no video found"
+  let activeuser = "dpornco"
+
+  /*If user is signed in, get their username to check for vote status on post later*/
+  if (typeof req.session.steemconnect !== 'undefined') {
+    activeuser = req.session.steemconnect.name;
+  }
+
+
+function getVidBeforeRender(category,username,permlink,activeuser){
+    let videodb = require('../modules/videodb');
+    let videohashstr = "no video found"
+
+    videodb.Video.findOne ({ 'permlink': [req.params.permlink] }, 'originalHash', function(err, dpost) {
+      if (err) return next(err);
+      if (!dpost) return res.render('single', {
+        category: category,
+        username: username,
+        permlink: permlink,
+        videohashstr: videohashstr,
+        activeuser: activeuser
+      });
+
+      let steem = require('steem');
+      steem.api.getContent(username, permlink, function(err, result) {
+        console.log(result.created)
+        if (err) {
+          console.log(err)
+        } else {
+          dpost.set({value: result.total_payout_value.slice(0, -4),
+            netvote: result.net_votes,
+            tags: JSON.parse(result.json_metadata).tags.join(','),
+            posteddate: result.created})
+          dpost.save(function (err, vid) {
+            if (err) console.log(err)
+          });
+        }
+      });
+
+
+      return videohashstr = JSON.stringify(dpost.originalHash),
+      videohashstr = videohashstr.slice(1, -1),
+      res.render('single', {
+        category: category,
+        username: username,
+        permlink: permlink,
+        videohashstr: videohashstr,
+        activeuser: activeuser
+      });
+      
+    });
+};
+
+
+getVidBeforeRender(category,username,permlink,activeuser);
+
+});
+
+
 /* GET a single post page page. */
 router.get('/:category/@:username/:permlink', (req, res, next) => {
       let category = req.params.category
