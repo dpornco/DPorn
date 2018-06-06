@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  include partials/nav
+
+  main.tagspage(data-tags=`${tags}`)
+    .container
+      .row.taglist

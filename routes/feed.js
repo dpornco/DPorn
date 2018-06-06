@@ -76,18 +76,8 @@ router.get('/:feed/:tag?', (req, res, next) => {
         }
         let results = result.sort(createdSort);
 
-      let posts = JSON.stringify(results)
-      //console.log(posts)
-
-
-      function convertCase(str) {
-        var lower = String(str).toLowerCase();
-        return lower.replace(/(^| )(\w)/g, function(x) {
-          return x.toUpperCase();
-        });
-      }
-      let formattedFeed = convertCase(feed)
-      let formattedTag = convertCase(tag)
+        let posts = JSON.stringify(results)
+      console.log(posts)
 
       res.render('feed', {
         feed: feed,

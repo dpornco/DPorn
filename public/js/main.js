@@ -114,6 +114,28 @@ function getMoreContent(filter, tag){
         getBlog(query, false)
       }
 }
+/**
+ * @function
+ * @param {array} result - An array with tags and counts
+ */
+function displayTagPage(result){
+  //console.log(result)
+  result.sort(function(a,b) {
+    if (a._id.tags < b._id.tags)
+      return -1;
+    if (a._id.tags > b._id.tags)
+      return 1;
+    return 0;
+  })
+  for (let i = 0; i < result.length; i++) {
+    let tag = result[i]._id.tags
+    let count = result[i].count
+    let tagTemplate = `
+    <div class="aTag col-4"><a href="/feed/created/${tag}"><span>${tag} (${count})</span></a></div>
+    `
+    $('.taglist').append(tagTemplate)
+  }
+}
 
 /**
  * Adds more posts to the current feed view
@@ -572,15 +594,18 @@ if ($('main').hasClass('feed') ) {
       displayContent(posts,0)
       console.log(posts)
     } else {
-      getTrendingTags()
-      //getLatest({tag, 'limit': 30 }, true)
       displayContent(posts,0)
+      //getLatest({tag, 'limit': 30 }, true)
     }
 }
 
 if ($('main').hasClass('single')) {
   let data = $('main').data()
   getPostAndComments(`/${data.category}/@${data.username}/${data.permlink}`,`${data.videohashstr}`)
+}
+
+if ($('main').hasClass('tagspage')) {
+  displayTagPage($('main').data('tags'))
 }
 
 if ($('main').hasClass('dashboard')) {

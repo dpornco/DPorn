@@ -11,9 +11,8 @@ let index = require('./routes/index');
 let auth = require('./routes/auth');
 let feed = require('./routes/feed');
 let post = require('./routes/post');
-//let view = require('./routes/view');
 let uploads = require('./routes/uploads');
-//let tag = require('./routes/tag');
+let tags = require('./routes/tags')
 
 let config = require('./config')
 
@@ -36,6 +35,8 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '2100mb'}));
+app.use(bodyParser.urlencoded({limit: '2100mb', extended: true}));
 app.use(expressSanitized.middleware());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -52,7 +53,7 @@ app.use('/post', post);
 app.use('/post/create-post', post);
 // app.use('/view', view);
 app.use('/upload', uploads);
-//app.use('/tag', tag);
+app.use('/tags', tags);
 
 
 // catch 404 and forward to error handler
@@ -65,13 +66,13 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  //res.locals.message = err.message;
-  //res.locals.error = req.app.get('env') === 'development' ? err : {};
+  //set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.redirect('/');
+  //res.redirect('/');
 });
 
 var cron = require('node-cron');
@@ -108,7 +109,7 @@ cron.schedule('*/2 * * * *', function(){
                 if (err) console.log(err)
               });
             } else {
-              console.log("post not found", entry.permlink)
+              console.log("post not found")
               
             }
           }
@@ -116,7 +117,17 @@ cron.schedule('*/2 * * * *', function(){
       };
     });
 
-  console.log("cache update completed");
+ console.log("cache update completed");
 });
-
+// cron.schedule('*/2 * * * *', function(){
+//   console.log("checking tags")
+//   let videodb = require('./modules/videodb');
+//     videodb.Video.aggregate([
+//       { $project: { tags: { $split:["$tags",","] }}},
+//       { $unwind: "$tags"},
+//       { $group: { _id: {"tags" : "$tags"}, count:{ $sum:1 } } }
+//     ], function (err, result) {
+//       console.log(err,result)
+//     })
+// });
 module.exports = app;
