@@ -107,7 +107,7 @@ a:hover {
   border-radius: 5px;
   margin: 0 5px 0 0;
   background-color: #ff1493;
-  /*display: none;*/
+  color: black;
 }
 
 img {

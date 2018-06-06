@@ -31,12 +31,12 @@ router.post('/', function(req, res){
   // rename it to it's orignal name
   form.on('file', function(field, file) {
     fs.rename(file.path, path.join(form.uploadDir, file.name.replace(/[^\w\s]/gi, '')))
-    let uploadedFileAndLocation = fs.createReadStream(path.join(form.uploadDir, file.name))
+    let uploadedFileAndLocation = fs.createReadStream(path.join(form.uploadDir, file.name.replace(/[^\w\s]/gi, '')))
     let fileToAddToIpfs = {content: uploadedFileAndLocation}
     ipfs.files.add(fileToAddToIpfs, function (err, files) {
       console.log(files[0].hash)
       res.send(files[0].hash)
-      fs.rename(form.uploadDir+"/"+file.name, form.uploadDir+"/"+files[0].hash, (function (err) {
+      fs.rename(form.uploadDir+"/"+file.name.replace(/[^\w\s]/gi, ''), form.uploadDir+"/"+files[0].hash, (function (err) {
         if (err) throw err;
         console.log('File Renamed.');
        }))

@@ -124,7 +124,7 @@ function getMoreContent(filter, tag){
 function displayContent(result, page){
   //console.log(result)
   //if (!initial) result.shift()
-  console.log(result)
+  //console.log(result)
     if (page > 0) result = result.slice(page*30,result.length)
   //for (let i = 0; i < result.length ; i++) {
     for (let i = 0; i < 30 && i < result.length ; i++) {
@@ -145,13 +145,14 @@ function displayContent(result, page){
       //   image = JSON.parse(post.json_metadata).image[0]
       // }
       let image = `https://gateway.ipfs.io/ipfs/` + post.posterHash
+      //let image = `https://dporn.co/vidcache/` + post.posterHash
       let url = '/watch/@' + post.username + '/' + post.permlink
       let id = ''
       //console.log(url)
       let itemTemplate = `
       <div class="item d-flex flex-wrap p-0" data-post-id="${id}" data-url="${url}" data-permlink="${post.permlink}">
       <div class="item__image__wrapper">
-      <a href="${url}"><img class="item__image" src="https://steemitimages.com/520x520/${image}" onerror=""></a>
+      <a href="${url}"><img class="item__image" src="${image}" onerror=""></a>
 	        </div>
           <div class="item__meta">
 	        <div class = "item__title">
@@ -247,7 +248,7 @@ function getPostAndComments(url) {
         created: result.content[post].created,
         votes: result.content[post].net_votes,
         voters: result.content[post].active_votes.map(vote => vote.voter),
-        value: Math.round( parseFloat(result.content[post].pending_payout_value.substring(0,5)) * 100) / 100
+        value: parseFloat(result.content[post].pending_payout_value.slice(0, -4)) + parseFloat(result.content[post].total_payout_value.slice(0, -4))
       })
     }
 
@@ -315,10 +316,11 @@ function appendSinglePost(post, users){
   let activeUser = info.activeuser
   //console.log(info)
   let voted = false
-  let tags = JSON.parse(post.json).tags.reduce( (all,tag) => all + `<span>${tag}</span>`, '')
+  let tags = JSON.parse(post.json).tags.reduce( (all,tag) => all + `<a href="/feed/created/${tag}"><span>${tag}</span></a>`, '')
 
   let header = `
     <div class = "videowrapper">
+      <div class="tags">${tags}</div> 
       <video controls preload="auto"> 
         <source = src="/vidcache/${info.videohashstr}"></source>
         <source = src="https://gateway.ipfs.io/ipfs/${info.videohashstr}"></source>
@@ -327,9 +329,8 @@ function appendSinglePost(post, users){
       <div class = "videoFooter d-flex justify-content-between">
         <div class = "authorInfo">
           <img src="${profileImage}" class="author-img" width="35" height="35" src="">   
-          @${post.author}
-        </div>
-        <div class="tags">${tags}</div>        
+          <a href="/@${post.author}">@${post.author}</a>
+        </div>       
         <div class="videotitle"><h2 class="title">${post.title}</h2></div>
       </div>
 
@@ -344,7 +345,8 @@ function appendSinglePost(post, users){
               <input type="hidden" name="permlink" value="${post.permlink}">
               <input type="hidden" id="videoVoteWeight" name="weight" value="${voteWeight}">
               <input class="vote btn btn-primary" type="submit" id="videoVoteButton" value="Upvote ${voteWeight}%">
-            </form></div></div>`;
+            </form></div>
+            <div class=postValue>This video has earned $${post.value} SBD from upvotes</div></div>`;
 
  let commentBox = `
   <div>

@@ -44,7 +44,7 @@ router.get('/:feed/:tag?', (req, res, next) => {
 
   if(!tag && feed === "trending"){
     tag = ' '
-    videodb.Video.find({}, function (err, result) {
+    videodb.Video.find({posteddate: {$gte: new Date((new Date().getTime() - (7 * 24 * 60 * 60 * 1000)))}}, function (err, result) {
       if (err) {
         console.log(err)
       } else {
@@ -102,7 +102,7 @@ router.get('/:feed/:tag?', (req, res, next) => {
 
   if(!tag && feed != "trending"){
     tag = ' '
-    videodb.Video.find({}, function (err, result) {
+    videodb.Video.find({posteddate: {$gte: new Date((new Date().getTime() - (7 * 24 * 60 * 60 * 1000)))}}, function (err, result) {
       if (err) {
         console.log(err)
       } else {

@@ -93,7 +93,7 @@ function getVidBeforeRender(category,username,permlink,activeuser){
 
       let steem = require('steem');
       steem.api.getContent(username, permlink, function(err, result) {
-        console.log(result.created)
+        console.log(result)
         if (err) {
           console.log(err)
         } else {
@@ -144,8 +144,9 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
   function getVidBeforeRender(category,username,permlink,activeuser){
         let videodb = require('../modules/videodb');
         let videohashstr = "no video found"
+        let value = 0
 
-        videodb.Video.findOne ({ 'permlink': [req.params.permlink] }, 'originalHash', function(err, dpost) {
+        videodb.Video.findOne ({ 'permlink': [req.params.permlink] }, function(err, dpost) {
           if (err) return next(err);
           if (!dpost) return res.render('single', {
             category: category,
@@ -155,31 +156,17 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
             activeuser: activeuser
           });
 
-          let steem = require('steem');
-          steem.api.getContent(username, permlink, function(err, result) {
-            console.log(result.created)
-            if (err) {
-              console.log(err)
-            } else {
-              dpost.set({value: result.total_payout_value.slice(0, -4),
-                netvote: result.net_votes,
-                tags: JSON.parse(result.json_metadata).tags.join(','),
-                posteddate: result.created})
-              dpost.save(function (err, vid) {
-                if (err) console.log(err)
-              });
-            }
-          });
-
 
           return videohashstr = JSON.stringify(dpost.originalHash),
           videohashstr = videohashstr.slice(1, -1),
+          value = JSON.stringify(dpost.value),
           res.render('single', {
             category: category,
             username: username,
             permlink: permlink,
             videohashstr: videohashstr,
-            activeuser: activeuser
+            activeuser: activeuser,
+            value: value
           });
 
 
