@@ -28,16 +28,16 @@ function getTrendingTags(){
  * @param {Object} query - a steem feed query object - {tag: 'photography', 'limit': 20 }
  * @param {Boolean} initial - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
  */
-function getTrending(query, initial){
-  steem.api.getDiscussionsByTrending(query, (err, result) => {
-    if (err === null) {
-      displayContent(result,initial)
-      getaccounts(result.map(post => post.author))
-    } else {
-      console.log(err);
-    }
-  });
-}
+// function getTrending(query, initial){
+//   steem.api.getDiscussionsByTrending(query, (err, result) => {
+//     if (err === null) {
+//       displayContent(result,initial)
+//       getaccounts(result.map(post => post.author))
+//     } else {
+//       console.log(err);
+//     }
+//   });
+// }
 
 /**
  * Gets a set of latest posts from the the steem api
@@ -150,20 +150,19 @@ function displayContent(result, page){
       let id = ''
       //console.log(url)
       let itemTemplate = `
-      <div class="item d-flex flex-wrap p-0" data-post-id="${id}" data-url="${url}" data-permlink="${ post.permlink }">
-	      <div class="item__contents">
-	        <div class="item__image__wrapper">
-                  <a href="${url}"><img class="item__image" src="https://steemitimages.com/520x520/${image}" onerror=""></a>
+      <div class="item d-flex flex-wrap p-0" data-post-id="${id}" data-url="${url}" data-permlink="${post.permlink}">
+      <div class="item__image__wrapper">
+      <a href="${url}"><img class="item__image" src="https://steemitimages.com/520x520/${image}" onerror=""></a>
 	        </div>
           <div class="item__meta">
 	        <div class = "item__title">
                   <a href="${url}"><h3>${post.title}</h3></a>
           </div>
           <div class = "item__details">
-	          <div class = "item__author">
-                    <span>@${post.username}</span>
+	          <div class = "item__author float-left">
+                    <span><a href=/@${post.username}>@${post.username}</a></span>
             </div>
-            <div class = "item__value">
+            <div class = "item__value float-right">
               <span>$${post.value} SBD</span>
             </div>
           </div>
@@ -566,10 +565,12 @@ if ($('main').hasClass('feed') ) {
     } else if (feedType === 'user-feed'){
       //let username = $('main').data('username')
       //getUserFeed({ tag: username, limit: 20 }, true)
-      getTrending({tag, 'limit': 30 }, true)
+      displayContent(posts,0)
+      console.log(posts)
     } else {
       getTrendingTags()
-      getLatest({tag, 'limit': 30 }, true)
+      //getLatest({tag, 'limit': 30 }, true)
+      displayContent(posts,0)
     }
 }
 
