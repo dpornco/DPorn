@@ -28,16 +28,16 @@ function getTrendingTags(){
  * @param {Object} query - a steem feed query object - {tag: 'photography', 'limit': 20 }
  * @param {Boolean} initial - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
  */
-function getTrending(query, initial){
-  steem.api.getDiscussionsByTrending(query, (err, result) => {
-    if (err === null) {
-      displayContent(result,initial)
-      getaccounts(result.map(post => post.author))
-    } else {
-      console.log(err);
-    }
-  });
-}
+// function getTrending(query, initial){
+//   steem.api.getDiscussionsByTrending(query, (err, result) => {
+//     if (err === null) {
+//       displayContent(result,initial)
+//       getaccounts(result.map(post => post.author))
+//     } else {
+//       console.log(err);
+//     }
+//   });
+// }
 
 /**
  * Gets a set of latest posts from the the steem api
@@ -150,20 +150,19 @@ function displayContent(result, page){
       let id = ''
       //console.log(url)
       let itemTemplate = `
-      <div class="item d-flex flex-wrap p-0" data-post-id="${id}" data-url="${url}" data-permlink="${ post.permlink }">
-	      <div class="item__contents">
-	        <div class="item__image__wrapper">
-                  <a href="${url}"><img class="item__image" src="https://steemitimages.com/520x520/${image}" onerror=""></a>
+      <div class="item d-flex flex-wrap p-0" data-post-id="${id}" data-url="${url}" data-permlink="${post.permlink}">
+      <div class="item__image__wrapper">
+      <a href="${url}"><img class="item__image" src="https://steemitimages.com/520x520/${image}" onerror=""></a>
 	        </div>
           <div class="item__meta">
 	        <div class = "item__title">
                   <a href="${url}"><h3>${post.title}</h3></a>
           </div>
           <div class = "item__details">
-	          <div class = "item__author">
-                    <span>@${post.username}</span>
+	          <div class = "item__author float-left">
+                    <span><a href=/@${post.username}>@${post.username}</a></span>
             </div>
-            <div class = "item__value">
+            <div class = "item__value float-right">
               <span>$${post.value} SBD</span>
             </div>
           </div>
@@ -299,6 +298,7 @@ function generateProfileImage(author){
   return profileImage
 }
 
+
 /**
  * appends the main part of a post to the page
  * @function
@@ -346,7 +346,6 @@ function appendSinglePost(post, users){
               <input class="vote btn btn-primary" type="submit" id="videoVoteButton" value="Upvote ${voteWeight}%">
             </form></div></div>`;
 
-
  let commentBox = `
   <div>
     <textarea class="comment-message" rows="5"></textarea>
@@ -354,6 +353,7 @@ function appendSinglePost(post, users){
   </div>
   `
   $('main').append(header + html + voteButton + commentBox)
+
 
  let slider = document.getElementById("voteRangeSlider");
  slider.oninput = function() {
@@ -376,29 +376,6 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
         }
     return result});
 
-
-    /**
-     * Donation function. Called when you want user to donate to creators. Returns a Steemconnect URL in wich user can press active key to send donation.
- * @function
- * @param {String} donateCoin - Coin users want to donate, can be SBD or STEEM.
- * @param {String} donateAmount - How much user wants to donate as a stirng.
- * @param {String} donateMemo - What the memo user want to send with the donation.
- * @param {String} donateFrom - User who donatation comes from. Can be an empty string if user isn't logged in.
- */
-
-    function donate(donateCoin, donateAmount, donateMemo, donateFrom){
-      var coin = donateCoin
-      var to = author.name
-      var amount = donateAmount
-      var memo = donateMemo.replace(/\s+/g,'%20')
-      var from = ""
-      //todo: IF user is autheticated {
-      //from = user.name
-      //}
-      let site = "https://steemconnect.com/sign/transfer?to=" + to + "&from=" + from + "&memo=" + memo + "&amount=" + amount + "%20" + coin
-      return site
-    }
-
   function setVotedStatus(voted){
         if (voted === true) {
           voteWeight = 0,
@@ -412,7 +389,9 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
           console.log(document.getElementById("voteRangeWrapper").classList)
         }
   }
+
 }
+
 
 /**
  * appends comments to single page after main content
@@ -434,8 +413,6 @@ function appendComments(comments){
       })
     })
 }
-
-
 
 /**
  * creates the HTML for a comment from a comment object
@@ -588,10 +565,12 @@ if ($('main').hasClass('feed') ) {
     } else if (feedType === 'user-feed'){
       //let username = $('main').data('username')
       //getUserFeed({ tag: username, limit: 20 }, true)
-      getTrending({tag, 'limit': 30 }, true)
+      displayContent(posts,0)
+      console.log(posts)
     } else {
       getTrendingTags()
-      getLatest({tag, 'limit': 30 }, true)
+      //getLatest({tag, 'limit': 30 }, true)
+      displayContent(posts,0)
     }
 }
 
