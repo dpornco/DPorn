@@ -15,6 +15,7 @@ router.use(function(req, res, next) {
 
 
 router.post('/', function(req, res){
+  console.log("FOXON")
 
   // create an incoming form object
   let form = new formidable.IncomingForm();
