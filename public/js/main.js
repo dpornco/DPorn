@@ -392,6 +392,7 @@ steem.api.getActiveVotes(post.author, post.permlink, function(err, result) {
 
 }
 
+
 /**
      * Donation function. Called when you want user to donate to creators. Returns a Steemconnect URL in wich user can press active key to send donation.
  * @function
