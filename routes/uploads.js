@@ -30,14 +30,16 @@ router.post('/', function(req, res){
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
   form.on('file', function(field, file) {
-    fs.rename(file.path, path.join(form.uploadDir, file.name.replace(/[^\w\s]/gi, '')))
+    fs.rename(file.path, path.join(form.uploadDir, file.name.replace(/[^\w\s]/gi, '')), (function (err) {
+      if (err) console.log(err)
+    }));
     let uploadedFileAndLocation = fs.createReadStream(path.join(form.uploadDir, file.name.replace(/[^\w\s]/gi, '')))
     let fileToAddToIpfs = {content: uploadedFileAndLocation}
     ipfs.files.add(fileToAddToIpfs, function (err, files) {
       console.log(files[0].hash)
       res.send(files[0].hash)
       fs.rename(form.uploadDir+"/"+file.name.replace(/[^\w\s]/gi, ''), form.uploadDir+"/"+files[0].hash, (function (err) {
-        if (err) throw err;
+        if (err) console.log(err);
         console.log('File Renamed.');
        }))
      })
@@ -46,6 +48,7 @@ router.post('/', function(req, res){
 
   // log any errors that occur
   form.on('error', function(err) {
+    console.log(err)
     res.end('An error has occured: \n' + err);
   });
 /*

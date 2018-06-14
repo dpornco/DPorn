@@ -368,7 +368,7 @@ function appendSinglePost(post, users){
               <input type="hidden" id="videoVoteWeight" name="weight" value="${voteWeight}">
               <input class="vote btn btn-primary" type="submit" id="videoVoteButton" value="Upvote ${voteWeight}%">
             </form></div>
-            <div class=postValue>This video has earned $${post.value} SBD from upvotes</div></div>`;
+            <div class="postValue">This video has earned $${post.value} SBD from upvotes</div></div>`;
 
  let commentBox = `
   <div>
