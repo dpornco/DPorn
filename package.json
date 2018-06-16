@@ -16,6 +16,7 @@
     "ipfs-api": "^20.2.1",
     "mongoose": "^5.1.2",
     "morgan": "~1.9.0",
+    "node-cron": "^1.2.1",
     "pug": "2.0.0-beta11",
     "sc2-sdk": "^1.0.2",
     "serve-favicon": "~2.4.5",

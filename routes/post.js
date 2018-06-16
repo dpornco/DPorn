@@ -102,7 +102,9 @@ router.post('/comment',  util.isAuthenticatedJSON, (req, res) => {
     let parentPermlink = req.body.parentPermlink
     steem.setAccessToken(req.session.access_token);
 
-    steem.comment(parentAuthor, parentPermlink, author, permlink, title, body, '', (err, steemResponse) => {
+    //steem.comment(parentAuthor, parentPermlink, author, permlink, title, body, '', (err, steemResponse) => {
+      let ben = [{'account': "dporn", 'weight': 100},{'account': "dpornco", 'weight': 100}]
+      steem.broadcast([['comment', {'parent_author': '', 'parent_permlink': 'dporn', 'author': author, 'permlink': permlink, 'title': title, 'body': body, 'json_metadata': JSON.stringify({app: 'dporn.app/v0.0.3', tags: tags, image: ['"https://steemitimages.com/0x0/https://gateway.ipfs.io/ipfs/' + posterHash + '"']})}], ['comment_options', {'author': author, 'permlink': permlink, 'max_accepted_payout': '1000000.000 SBD', 'percent_steem_dollars': 10000, 'allow_votes': true, 'allow_curation_rewards': true, 'extensions': [[0, {'beneficiaries': ben}]]}]], function (err, response) {
       if (err) {
         res.json({ error: err.error_description })
       } else {

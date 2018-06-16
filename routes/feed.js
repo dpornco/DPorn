@@ -44,7 +44,7 @@ router.get('/:feed/:tag?', (req, res, next) => {
 
   if(!tag && feed === "trending"){
     tag = ' '
-    videodb.Video.find({}, function (err, result) {
+    videodb.Video.find({posteddate: {$gte: new Date((new Date().getTime() - (7 * 24 * 60 * 60 * 1000)))}}, function (err, result) {
       if (err) {
         console.log(err)
       } else {
@@ -77,9 +77,6 @@ router.get('/:feed/:tag?', (req, res, next) => {
         let results = result.sort(createdSort);
 
       let posts = JSON.stringify(results)
-      //console.log(posts)
-
-
       function convertCase(str) {
         var lower = String(str).toLowerCase();
         return lower.replace(/(^| )(\w)/g, function(x) {
@@ -102,7 +99,8 @@ router.get('/:feed/:tag?', (req, res, next) => {
 
   if(!tag && feed != "trending"){
     tag = ' '
-    videodb.Video.find({}, function (err, result) {
+
+    videodb.Video.find({posteddate: {$gte: new Date((new Date().getTime() - (7 * 24 * 60 * 60 * 1000)))}}, function (err, result) {
       if (err) {
         console.log(err)
       } else {
