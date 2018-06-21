@@ -24,7 +24,7 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
     console.log(tags)
     console.log(JSON.stringify(tags))
     let posterHash = req.body.thumbnailhash
-    let body = '<center><a href="https://alpha003.dporn.co/dporn/@'+author+"/"+permlink+'"><img src="https://steemitimages.com/0x0/http://gateway.ipfs.io/ipfs/'+posterHash+'"><h1>View video on DPorn</h1></a></center>'
+    let body = '<center><a href="https://dporn.co/dporn/@'+author+"/"+permlink+'"><img src="https://steemitimages.com/0x0/http://gateway.ipfs.io/ipfs/'+posterHash+'"><h1>View video on DPorn</h1></a></center>'
     let customData = {
       tags: tags,
       app: 'dporn.app/v0.0.3',
