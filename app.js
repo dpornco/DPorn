@@ -13,6 +13,7 @@ let feed = require('./routes/feed');
 let post = require('./routes/post');
 let uploads = require('./routes/uploads');
 let tags = require('./routes/tags')
+var api = require("./routes/api")
 
 let config = require('./config')
 
@@ -52,6 +53,7 @@ app.use('/post/create-post', post);
 // app.use('/view', view);
 app.use('/upload', uploads);
 app.use('/tags', tags);
+app.use('/api', api)
 
 
 // catch 404 and forward to error handler
