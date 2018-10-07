@@ -9,7 +9,7 @@
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
-    "express": "~4.15.5",
+    "express": "^4.16.3",
     "express-sanitize-escape": "^1.1.0",
     "express-session": "^1.15.6",
     "formidable": "^1.2.1",
@@ -19,9 +19,11 @@
     "node-cron": "^1.2.1",
     "pug": "2.0.0-beta11",
     "request": "^2.87.0",
+    "save": "^2.3.2",
     "sc2-sdk": "^1.0.2",
     "serve-favicon": "~2.4.5",
-    "steem": "^0.7.1"
+    "steem": "^0.7.2",
+    "steemconnect": "^2.0.0"
   },
   "devDependencies": {}
 }

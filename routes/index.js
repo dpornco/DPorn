@@ -171,7 +171,7 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
               });
             }
           });
-edd9be5d29a622182e6201d6d8abdbe0affaf3a1
+// edd9be5d29a622182e6201d6d8abdbe0affaf3a1
 
           return videohashstr = JSON.stringify(dpost.originalHash),
           videohashstr = videohashstr.slice(1, -1),
