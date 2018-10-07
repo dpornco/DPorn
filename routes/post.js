@@ -10,6 +10,7 @@ router.get('/', util.isAuthenticated, (req, res, next) => {
     res.render('post', {
       name: req.session.steemconnect.name
     });
+	console.log("CWD: "+process.cwd());
 });
 
 /* POST a create post broadcast to STEEM network. */
@@ -33,7 +34,21 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
       posterHash: posterHash
     }
 
-    //add to mongo
+      steem.setAccessToken(req.session.access_token);
+
+//    let ben = [{'account': "dporn", 'weight': 100},{'account': "dpornco", 'weight': 100}]
+	let ben = [{'account': "dporn", 'weight': 200},{'account': "dpornco", 'weight': 600},{'account': "dporn.pay", 'weight': 700}];
+
+
+    steem.broadcast([['comment', {'parent_author': '', 'parent_permlink': 'dporn', 'author': author, 'permlink': permlink, 'title': title, 'body': body, 'json_metadata': JSON.stringify({app: 'dporn.app/v0.0.7', tags: tags, image: ["\"https://steemitimages.com/0x0/http://gateway.ipfs.io/ipfs/" + posterHash + "\""]})}], ['comment_options', {'author': author, 'permlink': permlink, 'max_accepted_payout': '1000000.000 SBD', 'percent_steem_dollars': 10000, 'allow_votes': true, 'allow_curation_rewards': true, 'extensions': [[0, {'beneficiaries': ben}]]}]], function (err, response) {
+      if (err) {
+              console.log(err)
+              res.render('post', {
+                name: req.session.steemconnect.name,
+                msg: 'Error - ' + err
+              })
+            } else {
+    //add to mongo - after ON SUCCESS for posting to blockchain
     let videodb = require('../modules/videodb');
     let mongoEntry = new videodb.Video({
       title: title,
@@ -51,36 +66,20 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
       if (err) return handleError(err);
         // saved!
       });
+              var livePosts = JSON.parse(fs.readFileSync("livePosts.json"));
+              livePosts.push(author + "/" + permlink);
+              fs.writeFile("livePosts.json",  JSON.stringify(livePosts, null, 2) , function(err) {});
 
-      steem.setAccessToken(req.session.access_token);
-
-
-    let ben = [{'account': "dporn", 'weight': 100},{'account': "dpornco", 'weight': 100}]
-
-    steem.broadcast([['comment', {'parent_author': '', 'parent_permlink': 'dporn', 'author': author, 'permlink': permlink, 'title': title, 'body': body, 'json_metadata': JSON.stringify({app: 'dporn.app/v0.0.3', tags: tags, image: ["\"https://steemitimages.com/0x0/http://gateway.ipfs.io/ipfs/" + posterHash + "\""]})}], ['comment_options', {'author': author, 'permlink': permlink, 'max_accepted_payout': '1000000.000 SBD', 'percent_steem_dollars': 10000, 'allow_votes': true, 'allow_curation_rewards': true, 'extensions': [[0, {'beneficiaries': ben}]]}]], function (err, response) {
-      if (err) {
-              console.log(err)
-              res.render('post', {
-                name: req.session.steemconnect.name,
-                msg: 'Error - ' + err
-              })
-            } else {
-              var livePosts = JSON.parse(fs.readFileSync("livePosts.json"))
-              livePosts.push(author + "/" + permlink)
-              fs.writeFile("livePosts.json",  JSON.stringify(livePosts, null, 2) , function(err) {})
-              res.render('post', {
-                name: req.session.steemconnect.name,
-                msg: 'Posted To Steem Network'
-              })
-            }
-        });
-
+        res.json({
+          msg: 'Posted To Steem Network',
+          res: steemResponse
+        })
+      }
+    });
 });
 
 /* POST a vote broadcast to STEEM network. */
 router.post('/vote', util.isAuthenticatedJSON, (req, res) => {
-
-  
     //steem.setAccessToken(req.query.access_token);
     let postId = req.body.postId
     let voter = req.session.steemconnect.name
@@ -96,6 +95,7 @@ router.post('/vote', util.isAuthenticatedJSON, (req, res) => {
       }
     });
 })
+
 
 /* POST a comment broadcast to STEEM network. */
 router.post('/comment',  util.isAuthenticatedJSON, (req, res) => {
@@ -113,12 +113,13 @@ router.post('/comment',  util.isAuthenticatedJSON, (req, res) => {
       if (err) {
         res.json({ error: err.error_description })
       } else {
-        res.json({
-          msg: 'Posted To Steem Network',
-          res: steemResponse
-        })
-      }
-    });
+              res.render('post', {
+                name: req.session.steemconnect.name,
+                msg: 'Posted To Steem Network'
+              })
+            }
+        });
+
 });
 
 module.exports = router;
