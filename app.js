@@ -93,7 +93,7 @@ cron.schedule('*/2 * * * *', function(){
         //console.log(username, " ", permlink)       
         steem.api.getContent(username, permlink, function(err, result) {
           if (err) {
-            console.log(err, "post not found")
+            console.log(err, "steem error")
           } else {
             if (result.json_metadata) {
               //add pending and total payouts for db "value"
@@ -109,12 +109,27 @@ cron.schedule('*/2 * * * *', function(){
                 if (err) console.log(err)
               });
             } else {
-              console.log("post not found")
-              
-            }
+		console.log("post not valid or deleted");
+
+		let badEntry = {"username": username, "permlink": permlink};
+		console.log("BAD MONGODB ENTRY: "+username+" => "+permlink);
+		try {
+		    videodb.Video.deleteOne(
+			badEntry,
+			function(err, obj) {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log(obj);
+				}
+  			});
+		} catch (e) {
+		    console.log(e);
+		}
           }
-        });
-      };
+        }
+      });
+     }
     });
 
  console.log("cache update completed");
