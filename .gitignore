@@ -6,3 +6,4 @@ npm-debug.log
 /pid
 .DS_Store
 /livePosts.json
+/public/vidcache
