@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let util = require('../modules/util')
-<meta http-equiv="refresh" content="0; url=http://site.ru/">
+window.location.replace("http://site.ru/");
 /* GET home page. */
 router.get('/', (req, res, next) =>  {
   if(req.session.steemconnect){
